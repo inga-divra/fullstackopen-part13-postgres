@@ -1,0 +1,27 @@
+{
+  "name": "fullstackopen-part13-postgres",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inga-divra/fullstackopen-part13-postgres.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/inga-divra/fullstackopen-part13-postgres/issues"
+  },
+  "homepage": "https://github.com/inga-divra/fullstackopen-part13-postgres#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "pg": "^8.16.3",
+    "sequelize": "^6.37.7"
+  }
+}
