@@ -1,3 +1,6 @@
+// Sequelize Model Validation
+// https://renzoregio.medium.com/sequelize-model-validation-7024c5bc6736
+
 const { Model, DataTypes } = require('sequelize');
 
 const { sequelize } = require('../util/db');
@@ -15,6 +18,11 @@ User.init(
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
+      validate: {
+        isEmail: {
+          msg: 'Validation isEmail on username failed',
+        },
+      },
     },
     name: {
       type: DataTypes.STRING,
