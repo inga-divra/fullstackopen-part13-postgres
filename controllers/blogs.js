@@ -53,12 +53,25 @@ router.put('/:id', async (req, res, next) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
-  const blog = await Blog.findByPk(req.params.id);
-  if (blog) {
+router.delete('/:id', tokenExtractor, async (req, res, next) => {
+  try {
+    const blog = await Blog.findByPk(req.params.id);
+    if (!blog) return res.status(404).end();
+
+    const tokenUserId = Number(req.decodedToken.id);
+    console.log('blog.userId:', blog.userId, 'tokenUserId:', tokenUserId);
+
+    if (blog.userId !== tokenUserId) {
+      return res.status(403).json({
+        error: 'Only the creator can delete this blog!',
+      });
+    }
+
     await blog.destroy();
+    res.status(204).end();
+  } catch (error) {
+    next(error);
   }
-  res.status(204).end();
 });
 
 module.exports = router;
