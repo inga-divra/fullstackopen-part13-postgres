@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
   res.json(users);
 });
 
-/* Get user with readings data */
+/* Get user with readings data + info with reading lists*/
 router.get('/:id', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.id, {
@@ -23,7 +23,7 @@ router.get('/:id', async (req, res, next) => {
           as: 'readings',
           attributes: ['id', 'url', 'title', 'author', 'likes', 'year'],
           through: {
-            attributes: [],
+            attributes: ['read', 'id'],
           },
         },
       ],
