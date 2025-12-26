@@ -15,6 +15,14 @@ router.get('/', async (req, res) => {
 /* Get user with readings data + info with reading lists*/
 router.get('/:id', async (req, res, next) => {
   try {
+    let throughConfig = { attributes: ['read', 'id'] };
+
+    if (req.query.read === 'true') {
+      throughConfig.where = { read: true };
+    } else if (req.query.read === 'false') {
+      throughConfig.where = { read: false };
+    }
+
     const user = await User.findByPk(req.params.id, {
       attributes: ['name', 'username'],
       include: [
@@ -22,9 +30,7 @@ router.get('/:id', async (req, res, next) => {
           model: Blog,
           as: 'readings',
           attributes: ['id', 'url', 'title', 'author', 'likes', 'year'],
-          through: {
-            attributes: ['read', 'id'],
-          },
+          through: throughConfig,
         },
       ],
     });
