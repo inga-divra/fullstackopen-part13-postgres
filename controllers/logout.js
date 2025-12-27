@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { ReadingList, User, Session } = require('../models');
+const { User, Session } = require('../models');
 const jwt = require('jsonwebtoken');
 const { SECRET } = require('../util/config');
 
@@ -41,40 +41,13 @@ const tokenExtractor = async (req, res, next) => {
   next();
 };
 
-router.post('/', async (req, res, next) => {
-  try {
-    const reading = await ReadingList.create({
-      userId: req.body.user_id,
-      blogId: req.body.blog_id,
-    });
-    res.status(201).json(reading);
-  } catch (error) {
-    next(error);
-  }
-});
-
-/* Tehtävä  13.22*/
-router.put('/:id', tokenExtractor, async (req, res, next) => {
-  try {
-    const reading = await ReadingList.findByPk(req.params.id);
-    if (!reading) {
-      return res.status(404).json({ error: 'Not found' });
-    }
-
-    const tokenUserId = Number(req.decodedToken.id);
-
-    if (reading.userId !== tokenUserId) {
-      return res.status(403).json({
-        error: 'Only the owner can make changes!',
-      });
-    }
-
-    reading.read = req.body.read;
-    await reading.save();
-    res.json(reading);
-  } catch (error) {
-    next(error);
-  }
+router.delete('/', tokenExtractor, async (req, res) => {
+  await Session.destroy({
+    where: {
+      token: req.token,
+    },
+  });
+  res.status(204).end();
 });
 
 module.exports = router;
